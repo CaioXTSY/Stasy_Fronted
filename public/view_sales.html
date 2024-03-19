@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Vendas - STASY</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/admin_view_sales.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+          <img src="imgs/logo.png" alt="Logotipo">
+          <span class="logo-title">STASY</span>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <aside class="admin-sidebar">
+        <ul class="admin-menu">
+          <br>
+          <br>
+          <li><a href="/admin"><i class="fas fa-home"></i> Início</a></li>
+          <li><a href="/sale"><i class="fas fa-user-plus"></i> Iniciar Nova Venda</a></li>
+          <li><a href="/add_product"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+          <li><a href="/view_products"><i class="fas fa-eye"></i> Ver Produtos</a></li>
+          <li><a href="/view_users"><i class="fas fa-users"></i> Ver Usuários</a></li>
+          <li><a href="/view_sales"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
+          <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </aside>
+    <div class="admin-content">
+        <table class="sales-table">
+          <thead>
+            <tr>
+              <th>Data e Hora</th>
+              <th>Responsável</th>
+              <th>Valor Total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tableBody = document.querySelector('.sales-table tbody');
+
+    function fetchSales() {
+        axios.get('http://localhost:8080/sales')
+            .then(function(response) {
+                const sales = response.data;
+                populateSalesTable(sales);
+            })
+            .catch(function(error) {
+                console.error("Erro ao buscar vendas:", error);
+            });
+    }
+
+    function populateSalesTable(sales) {
+      tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novas linhas
+      sales.forEach(sale => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+              <td>${sale.date}</td>
+              <td>admin</td> <!-- Vendedor sempre será 'admin' -->
+              <td>R$ ${sale.total.toFixed(2)}</td>
+              <td>
+                  <button class="btn-action view-details" onclick="viewSaleDetails(${sale.id})"><i class="fa fa-eye"></i>Ver Detalhes</button>
+              </td>
+          `;
+          tableBody.appendChild(row);
+      });
+  }
+
+    function viewSaleDetails(saleId) {
+        // Aqui você pode adicionar a lógica para abrir um modal ou redirecionar para uma página com os detalhes da venda
+        console.log('Ver detalhes da venda com ID:', saleId);
+        alert(`Detalhes da venda ${saleId} não implementados.`);
+    }
+
+    fetchSales();
+});
+</script>
+
+</body>
+</html>

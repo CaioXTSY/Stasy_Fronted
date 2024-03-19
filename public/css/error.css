@@ -1,0 +1,29 @@
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+  
+
+  
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .error-container img {
+    width: 50%;
+    height: auto;
+    max-width: 3000px;
+    margin: auto;
+  }
+  
+  .error-container h1 {
+    font-size: 3em;
+    color: #333;
+  }

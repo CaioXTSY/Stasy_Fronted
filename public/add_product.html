@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Adicionar Produto - STASY</title>
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="css/sidebar.css">
+        <link rel="stylesheet" href="css/admin_view_product.css">
+        <link rel="stylesheet" href="css/admin_add_product.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    </head>
+    <body>
+        <header class="main-header">
+            <div class="logo-container">
+                <img src="imgs/logo.png" alt="Logotipo STASY">
+                <span class="logo-title">STASY</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Sobre</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </nav>
+        </header>
+        <aside class="admin-sidebar">
+            <ul class="admin-menu">
+                <br>
+                <br>
+                <li><a href="/admin"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="/sale"><i class="fas fa-user-plus"></i> Iniciar Nova Venda</a></li>
+                <li><a href="/add_product"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+                <li><a href="/view_products"><i class="fas fa-eye"></i> Ver Produtos</a></li>
+                <li><a href="/view_users"><i class="fas fa-users"></i> Ver Usuários</a></li>
+                <li><a href="/view_sales"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
+                <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </aside>
+        <div class="admin-content">
+            <form id="add-product-form" action="http://localhost:3000/post" method="POST">
+                <h1>Adicionar Produto</h1>
+                <div class="form-group">
+                    <div class="input-container">
+                        <label for="barcode">Código de Barras:</label>
+                        <input type="text" id="barcode" name="barcode" placeholder="Código de barras" required>
+                    </div>
+                    <div class="input-container">
+                        <label for="name">Nome do Produto:</label>
+                        <input type="text" id="name" name="name" placeholder="Nome do produto" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-container">
+                        <label for="manufacturer">Fabricante/Marca:</label>
+                        <input type="text" id="manufacturer" name="manufacturer" placeholder="Fabricante/Marca" required>
+                    </div>
+                    <div class="input-container">
+                        <label for="category">Categoria do Produto:</label>
+                        <select id="category" name="category" required>
+                            <option value="">Escolha a categoria</option>
+                            <option value="CLOTHING">CLOTHING</option>
+                            <option value="BebiELECTRONICSda">ELECTRONICS</option>
+                            <option value="DRINKS">DRINKS</option>
+                            <option value="ALIMENTO">ALIMENTO</option>
+                            <option value="BEBIDA">BEBIDA</option>
+                            <option value="ESCOLAR">ESCOLAR</option>
+                            <option value="ELETRONICO">ELETRONICO</option>
+                            <option value="LIMPEZA">LIMPEZA</option>
+                            <option value="HIGIENE">HIGIENE</option>
+                            <option value="OUTROS">OUTROS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-container">
+                        <label for="price">Preço do Produto:</label>
+                        <input type="number" step="0.01" id="price" name="price" placeholder="Valor do produto/unidade" required>
+                    </div>
+                    <div class="input-container">
+                        <label for="quantity">Quantidade em Estoque:</label>
+                        <input type="number" id="quantity" name="quantity" placeholder="Quantidade em estoque" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="reset">Limpar</button>
+                    <button type="submit">Adicionar Produto</button>
+                </div>
+            </form>
+        </div>
+        <footer class="main-footer">
+            <p>&copy; 2024 STASY. Todos os direitos reservados.</p>
+        </footer>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const form = document.getElementById('add-product-form');
+              form.addEventListener('submit', function(e) {
+                  e.preventDefault();
+                  const formData = new FormData(form);
+                  const object = {};
+                  formData.forEach((value, key) => {
+                      if (key === 'quantity') {
+                          object[key] = parseInt(value);
+                      } else {
+                          object[key] = value;
+                      }
+                  });
+                  console.log(object);
+                  axios.post('http://localhost:3000/post', JSON.stringify(object), {
+                      headers: {
+                          'Content-Type': 'application/json'
+                      }
+                  })
+                  .then(response => {
+                      console.log('Produto adicionado com sucesso');
+                      window.location.href = '/view_products';
+                  })
+                  .catch(error => {
+                      console.error('Erro ao adicionar produto:', error);
+                      alert('Houve um erro ao adicionar o produto. Por favor, tente novamente.');
+                  });
+              });
+            });
+        </script>
+    </body>
+</html>

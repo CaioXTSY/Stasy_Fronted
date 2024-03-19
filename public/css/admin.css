@@ -1,0 +1,193 @@
+
+.info-card .fas {
+  font-size: 10rem;
+}
+.admin-sidebar {
+    background-color: #404040;
+    color: #FFFFFF;
+    width: 250px;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    overflow: auto;
+  }
+  
+  .admin-menu {
+    list-style: none;
+    padding: 20px;
+  }
+  
+  .admin-menu li a {
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-menu li a:hover {
+    background-color: #505050;
+  }
+  
+ 
+  .admin-content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #f2f2f2;
+  }
+  
+  .info-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .info-card {
+    background-color: #FFFFFF;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: calc(50% - 10px);
+    text-align: center;
+  }
+  
+  .info-number {
+    font-weight: bold;
+  }
+  
+  .product-list {
+    background-color: #FFFFFF;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .products-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .products-table th, .products-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .products-table th {
+    background-color: #404040;
+    color: #ffffff;
+  }
+  
+  .products-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .btn-action {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .edit {
+    background-color: #ffa500;
+    color: white;
+  }
+  
+  .delete {
+    background-color: #ff4500;
+    color: white;
+  }
+  
+  .btn-action:hover {
+    opacity: 0.9;
+  }
+  
+  
+ 
+  @media (max-width: 768px) {
+    .admin-sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  
+    .admin-content {
+      margin-left: 0;
+    }
+  
+    .info-cards {
+      flex-direction: column;
+    }
+  
+    .info-card {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .logout {
+    margin-top: auto;
+  }
+
+  .h4{
+    text-align: center;
+  }
+
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .info-card {
+    flex: 1 0 200px;
+    margin: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+
+  .admin-content h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .admin-content form {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+  
+  .admin-content form label {
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .admin-content form input[type="text"],
+  .admin-content form input[type="number"],
+  .admin-content form select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .admin-content form input[type="submit"] {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .admin-content form input[type="submit"]:hover {
+    background-color: #0056b3;
+  }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar Produto - STASY</title>
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/admin_add_product.css"> <!-- Certifique-se de ajustar o nome do arquivo CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+          <img src="imgs/logo.png" alt="Logotipo">
+          <span class="logo-title">STASY</span>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <aside class="admin-sidebar">
+        <ul class="admin-menu">
+          <br>
+          <br>
+          <li><a href="/admin"><i class="fas fa-home"></i> Início</a></li>
+          <li><a href="/sale"><i class="fas fa-user-plus"></i> Iniciar Nova Venda</a></li>
+          <li><a href="/add_product"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+          <li><a href="/view_products"><i class="fas fa-eye"></i> Ver Produtos</a></li>
+          <li><a href="/view_users"><i class="fas fa-users"></i> Ver Usuários</a></li>
+          <li><a href="/view_sales"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
+          <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </aside>
+
+  <div class="admin-content">
+    <form id="edit-product-form">
+      <h1>Editar Produto</h1>
+      <div class="product-details">
+        <h2>Detalhes Atuais do Produto</h2>
+        <p><strong>ID do Produto:</strong> 12345</p>
+        <p><strong>Nome do Produto:</strong> Exemplo de Produto</p>
+      </div>
+      <div class="form-group">
+        <div class="input-container">
+          <label for="new-product-name">Novo Nome do Produto</label>
+          <input type="text" id="new-product-name" name="new-product-name" placeholder="Novo nome do produto">
+        </div>
+        <div class="input-container">
+          <label for="new-manufacturer-name">Nova Fabricante/Marca</label>
+          <input type="text" id="new-manufacturer-name" name="new-manufacturer-name" placeholder="Nova fabricante/marca">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-container">
+          <label for="new-product-category">Nova Categoria do Produto</label>
+          <input type="text" id="new-product-category" name="new-product-category" placeholder="Nova categoria do produto">
+        </div>
+        <div class="input-container">
+          <label for="new-product-code">Novo Código do Produto</label>
+          <input type="text" id="new-product-code" name="new-product-code" placeholder="Novo código do produto">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-container">
+          <label for="new-product-price">Preço por Unidade</label>
+          <input type="text" id="new-product-price" name="new-product-price" placeholder="Novo preço por unidade">
+        </div>
+        <div class="input-container">
+          <label for="new-product-quantity">Quantidade em Estoque</label>
+          <input type="number" id="new-product-quantity" name="new-product-quantity" placeholder="Nova quantidade em estoque">
+        </div>
+      </div>
+      
+      <!-- Continue adicionando os demais campos de formulário aqui -->
+      <div class="form-actions">
+        <button type="reset" class="btn-reset">Cancelar</button>
+        <button type="submit" class="btn-submit">Atualizar Produto</button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="main-footer">
+    <p>&copy; 2024 STASY. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Produtos - STASY</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/admin_view_users.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-container">
+      <img src="imgs/logo.png" alt="Logotipo">
+      <span class="logo-title">STASY</span>
+    </div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Sobre</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+  <aside class="admin-sidebar">
+    <ul class="admin-menu">
+      <li><a href="admin_add_product.html"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+      <li><a href="admin_add_product.html"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+      <li><a href="adminpage_view_product.html"><i class="fas fa-eye"></i> Ver Produtos</a></li>
+      <li><a href="admin_view_users.html"><i class="fas fa-users"></i> Ver Usuários</a></li>
+      <li><a href="admin_view_sales.html"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
+      <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+  </aside>
+    <div class="admin-content">
+        <h1>Lista de Usuários</h1>
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Cargo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>admin</td>
+              <td>admin</td>
+              <td>
+                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
+              </td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Caio</td>
+              <td>user</td>
+              <td>
+                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
+                <button class="btn-action delete"><i class="fa fa-trash"></i>Remover</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Noemy</td>
+              <td>user</td>
+              <td>
+                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
+                <button class="btn-action delete"><i class="fa fa-trash"></i>Remover</button>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Danilo</td>
+              <td>user</td>
+              <td>
+                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
+                <button class="btn-action delete"><i class="fa fa-trash"></i>Remover</button>
+              </td>
+            </tr>
+          </tbody>
+          
+          
+        </table>
+        <div class="pagination">
+        </div>
+    </div>
+
+    <footer class="main-footer">
+      <p>&copy; 2024 STASY. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var editButtons = document.querySelectorAll('.btn-action.edit');
+    
+        editButtons.forEach(function(button) {
+          button.addEventListener('click', function() {
+            window.location.href = 'admin_edit_user.html';
+          });
+        });
+      });
+    </script>
+</body>
+</html>

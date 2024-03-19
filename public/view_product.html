@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Produtos - STASY</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/admin_view_product.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+  <header class="main-header">
+    <div class="logo-container">
+      <img src="imgs/logo.png" alt="Logotipo">
+      <span class="logo-title">STASY</span>
+    </div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Sobre</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+  <aside class="admin-sidebar">
+    <ul class="admin-menu">
+      <br>
+      <br>
+      <li><a href="/admin"><i class="fas fa-home"></i> Início</a></li>
+      <li><a href="/sale"><i class="fas fa-user-plus"></i> Iniciar Nova Venda</a></li>
+      <li><a href="/add_product"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+      <li><a href="/view_products"><i class="fas fa-eye"></i> Ver Produtos</a></li>
+      <li><a href="/view_users"><i class="fas fa-users"></i> Ver Usuários</a></li>
+      <li><a href="/view_sales"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
+      <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+</aside>
+  <div class="admin-content">
+    <div class="product-filter">
+      <input type="text" placeholder="Buscar por nome..." id="searchProduct">
+      <select id="categoryFilter">
+        <option value="">Todas as Categorias</option>
+      </select>
+      <select id="priceFilter">
+        <option value="">Ordenar por preço</option>
+        <option value="asc">Menor para Maior</option>
+        <option value="desc">Maior para Menor</option>
+      </select>
+    </div>
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Estoque</th>
+          <th>Categoria</th>
+          <th>Fornecedor</th>
+          <th>Preço</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="pagination">
+    </div>
+  </div>
+  <footer class="main-footer">
+    <p>&copy; 2024 STASY. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let allProducts = [];
+      let currentPage = 1;
+      const productsPerPage = 3;
+      const searchInput = document.getElementById('searchProduct');
+      const categoryFilter = document.getElementById('categoryFilter');
+      const priceFilter = document.getElementById('priceFilter');
+      const tableBody = document.querySelector('.products-table tbody');
+      const paginationDiv = document.querySelector('.pagination');
+
+      function fetchProducts() {
+        axios.get('http://localhost:8080/products')
+          .then(function(response) {
+            allProducts = response.data;
+            currentPage = 1;
+            displayProductsPaginated(allProducts);
+          })
+          .catch(function(error) {
+            console.error("Erro ao buscar produtos:", error);
+          });
+      }
+
+      function displayProductsPaginated(products) {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsToShow = products.slice(startIndex, endIndex);
+
+        tableBody.innerHTML = '';
+        productsToShow.forEach(product => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>${product.category}</td>
+            <td>${product.manufacturer}</td>
+            <td>R$ ${product.price.toFixed(2)}</td>
+            <td>
+              <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
+              <button class="btn-action delete" data-product-id="${product.id}"><i class="fa fa-trash"></i>Remover</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+    
+          row.querySelector('.btn-action.delete').addEventListener('click', function() {
+            deleteProduct(product.id);
+          });
+        });
+    
+        updatePagination(products.length);
+      }
+    
+      function updatePagination(totalProducts) {
+        paginationDiv.innerHTML = '';
+        const pageCount = Math.ceil(totalProducts / productsPerPage);
+    
+        for (let i = 1; i <= pageCount; i++) {
+          const pageButton = document.createElement('button');
+          pageButton.textContent = i;
+          pageButton.addEventListener('click', () => {
+            currentPage = i;
+            displayProductsPaginated(allProducts);
+          });
+    
+          paginationDiv.appendChild(pageButton);
+        }
+      }
+    
+      function deleteProduct(productId) {
+        if(confirm('Tem certeza que deseja remover este produto?')) {
+          axios.delete(`http://localhost:3000/delete-product/${productId}`)
+            .then(response => {
+              console.log('Produto removido com sucesso:', productId);
+              fetchProducts();
+            })
+            .catch(error => {
+              console.error("Erro ao remover produto:", error);
+            });
+        }
+      }
+    
+      function filterAndSortProducts() {
+        let filteredProducts = allProducts.filter(product => 
+          product.name.toLowerCase().includes(searchInput.value.toLowerCase())
+        );
+    
+        if (categoryFilter.value) {
+          filteredProducts = filteredProducts.filter(product => 
+            product.category === categoryFilter.value
+          );
+        }
+    
+        if (priceFilter.value === "asc") {
+          filteredProducts.sort((a, b) => a.price - b.price);
+        } else if (priceFilter.value === "desc") {
+          filteredProducts.sort((a, b) => b.price - a.price);
+        }
+    
+        currentPage = 1;
+        displayProductsPaginated(filteredProducts);
+      }
+    
+      searchInput.addEventListener('input', filterAndSortProducts);
+      categoryFilter.addEventListener('change', filterAndSortProducts);
+      priceFilter.addEventListener('change', filterAndSortProducts);
+    
+      fetchProducts();
+    });
+    </script>
+    
+
+      
+
+      
+</body>
+</html>

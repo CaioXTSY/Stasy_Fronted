@@ -1,0 +1,70 @@
+body{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+.product-filter {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-filter input, .product-filter select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 30%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #0056b3;
+}
+.products-table {
+    width: 40%;
+}
+
+.admin-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 10vh;
+}
+
+.products-table {
+    margin: 0 auto;
+    width: 40%;
+    height: 20rem;
+    font-size: 1.5rem;
+}
+
+.btn-action {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-action:hover {
+    background-color: #004085;
+}

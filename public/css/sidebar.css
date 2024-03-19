@@ -1,0 +1,29 @@
+.admin-sidebar {
+    background-color: #404040;
+    color: #FFFFFF;
+    width: 250px;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    overflow: auto;
+  }
+  
+  .admin-menu {
+    list-style: none;
+    padding: 20px;
+  }
+  
+  .admin-menu li a {
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+    transition: background-color 0.3s;
+  }
+  
+  .admin-menu li a:hover {
+    background-color: #505050;
+  }

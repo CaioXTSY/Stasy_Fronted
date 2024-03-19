@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Vendas - STASY</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/admin_view_sales.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+          <img src="imgs/logo.png" alt="Logotipo">
+          <span class="logo-title">STASY</span>
+        </div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <aside class="admin-sidebar">
+        <ul class="admin-menu">
+            <li><a href="sales.html"><i class="fas fa-plus"></i> iniciar Nova Venda</a></li>
+            <li><a href="sales.html"><i class="fas fa-plus"></i> iniciar Nova Venda</a></li>
+            <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+      </aside>
+    <div class="admin-content">
+        <table class="sales-table">
+          <thead>
+            <tr>
+              <th>Data e Hora</th>
+              <th>Responsável</th>
+              <th>Valor Total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024-02-28 15:30</td>
+              <td>Você(Danilo)</td>
+              <td>R$ 1.200,00</td>
+              <td>
+                <button class="btn-action view-details"><i class="fa fa-eye"></i>Ver Detalhes</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2024-02-27 10:15</td>
+              <td>Você(Danilo)</td>
+              <td>R$ 2.500,00</td>
+              <td>
+                <button class="btn-action view-details"><i class="fa fa-eye"></i>Ver Detalhes</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2024-02-26 14:05</td>
+              <td>Você(Danilo)</td>
+              <td>R$ 750,00</td>
+              <td>
+                <button class="btn-action view-details"><i class="fa fa-eye"></i>Ver Detalhes</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('finalize-sale').addEventListener('click', function() {
+            window.location.href = 'admin_check_sales.html';
+        });
+        document.getElementById('check-old-sales').addEventListener('click', function() {
+            window.location.href = 'admin_check_sales.html';
+        });
+    </script>
+</body>
+</html>

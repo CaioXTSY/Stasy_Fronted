@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>STASY - Sistema de Vendas</title>
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="css/sales.css">
+        <link rel="stylesheet" href="css/sidebar.css">
+        <link rel="stylesheet" href="css/suggestions.css">
+        <link rel="stylesheet" href="css/sales.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <header class="main-header">
+            <div class="logo-container">
+                <img src="imgs/logo.png" alt="Logotipo">
+                <span class="logo-title">STASY</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Sobre</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="sales-main">
+            <div class="product-search-form">
+                <input type="text" id="productSearch" placeholder="Digite o nome ou código do produto">
+                <button id="searchButton">Buscar</button>
+            </div>
+            <table class="sales-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço Unitário</th>
+                        <th>Quantidade</th>
+                        <th>Preço Total</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="totalValue">Valor total: R$0,00</div>
+            <button id="finalizeSale">Finalizar Venda</button>
+            <div class="button-container">
+                <button id="checkOldSales" onclick="location.href='/admin';"><i class="fas fa-history"></i> Sair</button>
+                <button type="button" id="clearButton"><i class="fas fa-trash-alt"></i> Limpar venda</button>
+            </div>
+        </main>
+        <footer class="main-footer">
+            <p>&copy; 2024 STASY. Todos os direitos reservados.</p>
+        </footer>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchButton = document.getElementById('searchButton');
+                const productSearchInput = document.getElementById('productSearch');
+                const tableBody = document.querySelector('.sales-table tbody');
+                let totalValueDisplay = document.getElementById('totalValue');
+                let totalValue = 0;
+                let allProducts = [];
+                const suggestionsContainer = document.createElement('div');
+                suggestionsContainer.classList.add('suggestions-container');
+                productSearchInput.parentNode.appendChild(suggestionsContainer);
+            
+                axios.get('http://localhost:8080/products')
+                    .then(function(response) {
+                        allProducts = response.data;
+                    })
+                    .catch(function(error) {
+                        console.error("Erro ao carregar produtos:", error);
+                    });
+
+                productSearchInput.addEventListener('input', function() {
+                    const userInput = this.value.toLowerCase();
+                    suggestionsContainer.innerHTML = '';
+                    if (userInput.length > 0) {
+                        const filteredProducts = allProducts.filter(product =>
+                            product.name.toLowerCase().includes(userInput)
+                        );
+                        filteredProducts.forEach(product => {
+                            const div = document.createElement('div');
+                            div.textContent = product.name;
+                            div.classList.add('suggestion');
+                            div.addEventListener('click', function() {
+                                productSearchInput.value = product.barcode;
+                                suggestionsContainer.innerHTML = '';
+                            });
+                            suggestionsContainer.appendChild(div);
+                        });
+                    }
+                });
+            
+                searchButton.addEventListener('click', function() {
+                    const barcode = productSearchInput.value.trim();
+                    performProductSearch(barcode);
+                });
+            
+                function performProductSearch(barcode) {
+                    const product = allProducts.find(p => p.barcode === barcode);
+                    const existingTotal = calculateTotalAdded(barcode);
+            
+                    if (product) {
+                        let quantity = prompt(`Quantas unidades de "${product.name}" você deseja adicionar? Estoque disponível: ${product.quantity - existingTotal}`);
+                        quantity = parseInt(quantity, 10);
+            
+                        if (!quantity || isNaN(quantity) || quantity <= 0) {
+                            alert("Quantidade inválida.");
+                            return;
+                        }
+            
+                        if (quantity + existingTotal > product.quantity) {
+                            alert("A quantidade total excede o estoque disponível.");
+                            return;
+                        }
+            
+                        addProductToTable(product, quantity, barcode);
+                    } else {
+                        alert("Produto não encontrado.");
+                    }
+                }
+            
+                function calculateTotalAdded(productBarcode) {
+                    let totalAdded = 0;
+                    document.querySelectorAll('.quantity-input').forEach(input => {
+                        if (input.dataset.barcode === productBarcode) {
+                            totalAdded += parseInt(input.value, 10);
+                        }
+                    });
+                    return totalAdded;
+                }
+            
+                function addProductToTable(product, quantity) {
+                    const totalPrice = product.price * quantity;
+                    const row = tableBody.insertRow();
+                    // Adiciona o ID do produto como um atributo data-id para ser usado depois
+                    row.innerHTML = `
+                        <td>${product.name}</td>
+                        <td>R$${product.price.toFixed(2)}</td>
+                        <td><input type='number' value='${quantity}' class='quantity-input' min='1' max='${product.quantity}' data-id='${product.id}' data-initial-quantity='${quantity}'/></td>
+                        <td>R$${totalPrice.toFixed(2)}</td>
+                        <td><button class="remove-item">Remover</button></td>
+                    `;
+                    totalValue += totalPrice;
+                    updateTotalValue();
+            
+                    row.querySelector('.remove-item').addEventListener('click', function() {
+                        row.remove();
+                        updateQuantitiesAndTotal();
+                    });
+            
+                    row.querySelector('.quantity-input').addEventListener('change', function() {
+                        updateQuantitiesAndTotal();
+                    });
+                }
+            
+                function updateQuantitiesAndTotal() {
+                    totalValue = 0;
+                    document.querySelectorAll('.quantity-input').forEach(input => {
+                        const row = input.closest('tr');
+                        const barcode = input.dataset.barcode;
+                        const product = allProducts.find(p => p.barcode === barcode);
+                        const quantity = parseInt(input.value, 10);
+                        const maxQuantityAllowed = product.quantity - calculateTotalAdded(barcode) + parseInt(input.dataset.initialQuantity, 10);
+            
+                        if (quantity > 0 && quantity <= maxQuantityAllowed) {
+                            const totalPrice = product.price * quantity;
+                            row.cells[3].textContent = `R$${totalPrice.toFixed(2)}`;
+                            totalValue += totalPrice;
+                        } else {
+                            alert(`Quantidade inválida ou excede o estoque. Estoque disponível: ${maxQuantityAllowed}`);
+                            input.value = input.dataset.initialQuantity;
+                        }
+                    });
+                    updateTotalValue();
+                }
+            
+                function updateTotalValue() {
+                    totalValueDisplay.textContent = `Valor total: R$${totalValue.toFixed(2)}`;
+                }
+                document.getElementById('clearButton').addEventListener('click', function() {
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+            totalValue = 0;
+            updateTotalValue();
+            suggestionsContainer.innerHTML = '';
+                });
+            });
+
+            document.getElementById('finalizeSale').addEventListener('click', function() {
+                const sale = {
+                    customerName: "",
+                    sellerId: "3fc327eb-ff20-4014-b7e6-76003fc407d8",
+                    products: {}
+                };
+    
+                document.querySelectorAll('.sales-table tbody tr').forEach(row => {
+                    // Use o atributo data-id para obter o ID do produto
+                    const productId = row.querySelector('.quantity-input').dataset.id;
+                    const quantity = parseInt(row.querySelector('.quantity-input').value);
+                    // Adiciona o produto ao objeto sale usando o ID
+                    if (productId in sale.products) {
+                        sale.products[productId] += quantity;
+                    } else {
+                        sale.products[productId] = quantity;
+                    }
+                });
+    
+                axios.post('http://localhost:3000/sales', sale, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Venda realizada com sucesso');
+                    window.location.href = '/view_sales';
+                })
+                .catch(error => {
+                    console.error('Erro ao realizar venda:', error);
+                    alert('Houve um erro ao realizar a venda. Por favor, tente novamente.');
+                });
+            });
+        ;
+
+        </script>
+    </body>
+</html>
