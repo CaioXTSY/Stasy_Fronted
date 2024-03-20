@@ -81,6 +81,14 @@ body, html {
     font-size: 1rem;
 }
 
+.update-item {
+    background-color: transparent;
+    color: #00700d;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
+
 .change-quantity {
     padding-top: 10px;
     background-color: transparent;
