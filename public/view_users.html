@@ -28,17 +28,21 @@
   </header>
   <aside class="admin-sidebar">
     <ul class="admin-menu">
-      <li><a href="admin_add_product.html"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
-      <li><a href="admin_add_product.html"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
-      <li><a href="adminpage_view_product.html"><i class="fas fa-eye"></i> Ver Produtos</a></li>
-      <li><a href="admin_view_users.html"><i class="fas fa-users"></i> Ver Usuários</a></li>
-      <li><a href="admin_view_sales.html"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
+      <br>
+      <br>
+      <li><a href="/admin"><i class="fas fa-home"></i> Início</a></li>
+      <li><a href="/sale"><i class="fas fa-user-plus"></i> Iniciar Nova Venda</a></li>
+      <li><a href="/add_product"><i class="fas fa-plus"></i> Adicionar Produto</a></li>
+      <li><a href="/view_products"><i class="fas fa-eye"></i> Ver Produtos</a></li>
+      <li><a href="/view_users"><i class="fas fa-users"></i> Ver Usuários</a></li>
+      <li><a href="/view_sales"><i class="fas fa-shopping-cart"></i> Ver Vendas</a></li>
       <li class="logout"><a href="landing.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
     </ul>
-  </aside>
-    <div class="admin-content">
-        <h1>Lista de Usuários</h1>
-        <table class="products-table">
+</aside>
+<div class="admin-content">
+  <h1>Lista de Usuários</h1>
+  <button class="add-user" onclick="location.href='/add_user'"><i class="fas fa-user-plus"></i> Adicionar Usuário</button>
+  <table class="products-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -54,38 +58,7 @@
               <td>admin</td>
               <td>
                 <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>Caio</td>
-              <td>user</td>
-              <td>
-                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
-                <button class="btn-action delete"><i class="fa fa-trash"></i>Remover</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Noemy</td>
-              <td>user</td>
-              <td>
-                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
-                <button class="btn-action delete"><i class="fa fa-trash"></i>Remover</button>
-              </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Danilo</td>
-              <td>user</td>
-              <td>
-                <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
-                <button class="btn-action delete"><i class="fa fa-trash"></i>Remover</button>
-              </td>
-            </tr>
           </tbody>
-          
-          
         </table>
         <div class="pagination">
         </div>
@@ -98,7 +71,6 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var editButtons = document.querySelectorAll('.btn-action.edit');
-    
         editButtons.forEach(function(button) {
           button.addEventListener('click', function() {
             window.location.href = 'admin_edit_user.html';

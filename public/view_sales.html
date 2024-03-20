@@ -41,62 +41,67 @@
         </ul>
     </aside>
     <div class="admin-content">
-        <table class="sales-table">
-          <thead>
-            <tr>
-              <th>Data e Hora</th>
-              <th>Responsável</th>
-              <th>Valor Total</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
+      <table class="sales-table">
+        <thead>
+          <tr>
+            <th>Data e Hora</th>
+            <th>Responsável</th>
+            <th>Valor Total</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+  </div>
 
-        </table>
-    </div>
+  <footer class="main-footer">
+  </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tableBody = document.querySelector('.sales-table tbody');
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const tableBody = document.querySelector('.sales-table tbody');
 
-    function fetchSales() {
-        axios.get('http://localhost:8080/sales')
-            .then(function(response) {
-                const sales = response.data;
-                populateSalesTable(sales);
-            })
-            .catch(function(error) {
-                console.error("Erro ao buscar vendas:", error);
+          function fetchSales() {
+              axios.get('http://localhost:8080/sales')
+                  .then(function(response) {
+                      const sales = response.data;
+                      populateSalesTable(sales);
+                  })
+                  .catch(function(error) {
+                      console.error("Erro ao buscar vendas:", error);
+                  });
+          }
+
+          function populateSalesTable(sales) {
+            tableBody.innerHTML = '';
+            sales.forEach(sale => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sale.date}</td>
+                    <td>admin</td>
+                    <td>R$ ${sale.total.toFixed(2)}</td>
+                    <td>
+                        <button class="btn-action view-details" data-sale-id="${sale.id}"><i class="fa fa-eye"></i> Ver Detalhes</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+        
+                const viewDetailsButton = row.querySelector('.btn-action.view-details');
+                viewDetailsButton.addEventListener('click', function() {
+                    viewSaleDetails(sale.id);
+                });
             });
-    }
+        }
+        
+        function viewSaleDetails(saleId) {
+            window.location.href = `/sale_details.html?id=${saleId}`;
+        }
 
-    function populateSalesTable(sales) {
-      tableBody.innerHTML = ''; // Limpa a tabela antes de adicionar novas linhas
-      sales.forEach(sale => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-              <td>${sale.date}</td>
-              <td>admin</td> <!-- Vendedor sempre será 'admin' -->
-              <td>R$ ${sale.total.toFixed(2)}</td>
-              <td>
-                  <button class="btn-action view-details" onclick="viewSaleDetails(${sale.id})"><i class="fa fa-eye"></i>Ver Detalhes</button>
-              </td>
-          `;
-          tableBody.appendChild(row);
+          fetchSales();
       });
-  }
-
-    function viewSaleDetails(saleId) {
-        // Aqui você pode adicionar a lógica para abrir um modal ou redirecionar para uma página com os detalhes da venda
-        console.log('Ver detalhes da venda com ID:', saleId);
-        alert(`Detalhes da venda ${saleId} não implementados.`);
-    }
-
-    fetchSales();
-});
-</script>
+  </script>
 
 </body>
 </html>

@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/admin_add_product.css"> <!-- Certifique-se de ajustar o nome do arquivo CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -90,5 +91,33 @@
   <footer class="main-footer">
     <p>&copy; 2024 STASY. Todos os direitos reservados.</p>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('productId');
+    
+      document.getElementById('edit-product-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+    
+        const updatedProduct = {
+          barcode: document.getElementById('new-product-code').value,
+          name: document.getElementById('new-product-name').value,
+          manufacturer: document.getElementById('new-manufacturer-name').value,
+          category: document.getElementById('new-product-category').value,
+          price: parseFloat(document.getElementById('new-product-price').value),
+          quantity: parseInt(document.getElementById('new-product-quantity').value),
+        };
+    
+        try {
+          const response = await axios.put(`http://localhost:3000/update-product/${productId}`, updatedProduct);
+          alert('Produto atualizado com sucesso!');
+          console.log(response.data);
+        } catch (error) {
+          console.error("Erro ao atualizar produto:", error.response ? error.response.data : error);
+        }
+      });
+    });
+    </script>
+    
 </body>
 </html>

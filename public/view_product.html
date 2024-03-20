@@ -55,7 +55,7 @@
     <table class="products-table">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Codigo de Barras</th>
           <th>Nome</th>
           <th>Estoque</th>
           <th>Categoria</th>
@@ -78,7 +78,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       let allProducts = [];
       let currentPage = 1;
-      const productsPerPage = 3;
+      const productsPerPage = 15;
       const searchInput = document.getElementById('searchProduct');
       const categoryFilter = document.getElementById('categoryFilter');
       const priceFilter = document.getElementById('priceFilter');
@@ -106,7 +106,7 @@
         productsToShow.forEach(product => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${product.id}</td>
+            <td>${product.barcode}</td>
             <td>${product.name}</td>
             <td>${product.quantity}</td>
             <td>${product.category}</td>
@@ -121,6 +121,10 @@
     
           row.querySelector('.btn-action.delete').addEventListener('click', function() {
             deleteProduct(product.id);
+          });
+
+          row.querySelector('.btn-action.edit').addEventListener('click', function() {
+            window.location.href = `/edit_product.html?productId=${product.id}`;
           });
         });
     

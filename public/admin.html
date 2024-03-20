@@ -58,7 +58,7 @@
             <table class="products-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>Codigo de Barras</th>
                   <th>Nome</th>
                   <th>Preço</th>
                   <th>Estoque</th>
@@ -88,7 +88,7 @@
           const tableBody = document.getElementById('products-table-body');
           topProducts.forEach(product => {
             const row = `<tr>
-                          <td>${product.id}</td>
+                          <td>${product.barcode}</td>
                           <td>${product.name}</td>
                           <td>R$ ${product.price.toFixed(2)}</td>
                           <td>${product.quantity}</td>
