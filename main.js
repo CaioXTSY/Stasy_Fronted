@@ -15,6 +15,22 @@ app.use(express.static(publicPath));
 app.get("/", (req, res) => {
   res.sendFile(path.join(publicPath, "landing.html"));
 })
+
+app.post('/api/add-user', async (req, res) => {
+  const userData = {
+    username: req.body.username,
+    password: req.body.password,
+    role: 'USER'
+  };
+
+  try {
+    const response = await axios.post('http://localhost:8080/users', userData);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Erro ao encaminhar os dados do usuário:", error.message);
+    res.status(500).json({ message: "Erro ao encaminhar os dados do usuário para o servidor." });
+  }
+});
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(publicPath, "admin.html"));
 });

@@ -66,15 +66,19 @@ body{
 }
 
 button.add-user {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 1rem 1rem;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 10px;
+    font-size: 20px;
     margin: 5px 2px;
     cursor: pointer;
     border-radius: 4px;
+}
+
+button.add-user:hover {
+    background-color: #45a049;
 }

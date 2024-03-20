@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/footer.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="css/admin_add_product.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -45,12 +46,7 @@
         <form id="user-form">
           <img src="imgs/logo.png">
           <h1>Adicionar Usuário</h1>
-          <h3>O projeto não possui autenticação, logo não foi possivel implementar a tempo</h3>
           <div class="form-group">
-            <div class="input-container">
-              <label for="user-name">Nome</label>
-              <input type="text" id="user-name" name="user-name" placeholder="Nome completo">
-            </div>
             <div class="input-container">
               <label for="user-username">Usuário</label>
               <input type="text" id="user-username" name="user-username" placeholder="Nome de usuário">
@@ -73,11 +69,24 @@
     </footer>
 </body>
 <script>
-  function showAddUserAlert() {
-    alert("Usuário adicionado com sucesso!");
-  }
-  function clearForm() {
-    document.getElementById("user-form").reset();
-  }
+  document.getElementById("user-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+  
+    const username = document.getElementById("user-username").value;
+    const password = document.getElementById("user-password").value;
+  
+    try {
+      const response = await axios.post('/api/add-user', {
+        username,
+        password
+      });
+  
+      alert("Usuário adicionado com sucesso!");
+      document.getElementById("user-form").reset();
+    } catch (error) {
+      console.error("Erro ao adicionar usuário:", error);
+      alert("Erro ao adicionar usuário.");
+    }
+  });
 </script>
 </html>
