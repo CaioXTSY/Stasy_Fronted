@@ -61,6 +61,7 @@
              let totalValueDisplay = document.getElementById('totalValue');
              let totalValue = 0;
              let allProducts = [];
+             let adminId = '';
              const suggestionsContainer = document.createElement('div');
              suggestionsContainer.classList.add('suggestions-container');
              productSearchInput.parentNode.appendChild(suggestionsContainer);
@@ -71,6 +72,20 @@
                  })
                  .catch(function(error) {
                      console.error("Erro ao carregar produtos:", error);
+                 });
+
+                 axios.get('http://localhost:8080/users')
+                 .then(function(response) {
+                     const users = response.data;
+                     const adminUser = users.find(user => user.role === 'ADMIN');
+                     if (adminUser) {
+                         adminId = adminUser.id;
+                     } else {
+                         console.error('Administrador não encontrado');
+                     }
+                 })
+                 .catch(function(error) {
+                     console.error("Erro ao carregar usuários:", error);
                  });
          
              productSearchInput.addEventListener('input', function() {
@@ -224,11 +239,16 @@
              
          
              document.getElementById('finalizeSale').addEventListener('click', function() {
-                 const sale = {
-                     customerName: "",
-                     sellerId: "4817d926-7c7b-463d-93a7-36a69b7bf299",//atualize com o id obtido em localhost:8080/users
-                     products: {}
-                 };
+                if (!adminId) {
+                    alert('ID do administrador não encontrado.');
+                    return;
+                }
+        
+                const sale = {
+                    customerName: "",
+                    sellerId: adminId,
+                    products: {}
+                };
              
                  document.querySelectorAll('.sales-table tbody tr').forEach(row => {
                      const productId = row.getAttribute('data-id');

@@ -11,6 +11,18 @@ app.use(express.json());
 const publicPath = path.join(__dirname, './public');
 app.use(express.static(publicPath));
 
+app.get('/users/delete/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const response = await axios.delete(`http://localhost:8080/users/${userId}`);
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error(`Erro ao deletar o usuário com ID ${userId}:`, error.message);
+    res.status(500).json({ message: "Erro interno do servidor ao tentar deletar o usuário." });
+  }
+});
+
 // Gets
 app.get("/", (req, res) => {
   res.sendFile(path.join(publicPath, "landing.html"));

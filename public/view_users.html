@@ -60,34 +60,53 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', async function() {
-        try {
-          const response = await axios.get('http://localhost:8080/users');
-          let users = response.data;
-          users.sort((a, b) => {
-            if (a.role === 'ADMIN') return -1;
-            if (b.role === 'ADMIN') return 1;
-            return 0;
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        const response = await axios.get('http://localhost:8080/users');
+        let users = response.data;
+        const tbody = document.querySelector('.products-table tbody');
+    
+        users.forEach(user => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${user.login}</td>
+            <td>${user.role}</td>
+            <td>
+              <button class="btn-action remove" data-user-id="${user.id}" data-user-role="${user.role}"><i class="fa fa-trash"></i>Remover</button>
+            </td>
+          `;
+    
+          // Encontra o botão recém-adicionado e associa um evento de clique
+          const removeBtn = tr.querySelector('.btn-action.remove');
+          removeBtn.addEventListener('click', function() {
+            deleteUser(user.id, user.role);
           });
-      
-          const tbody = document.querySelector('.products-table tbody');
-      
-          users.forEach(user => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${user.login}</td>
-              <td>${user.role}</td>
-              <td>
-                <button class="btn-action remove" data-user-id="${user.id}"><i class="fa fa-trash"></i>Remover</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        } catch (error) {
-          console.error("Não foi possível carregar os usuários:", error);
+    
+          tbody.appendChild(tr);
+        });
+    
+        // Função para deletar usuário
+        async function deleteUser(userId, userRole) {
+          // Verifica se o usuário é um administrador
+          if (userRole === 'ADMIN') {
+            alert('Não é possível deletar um administrador.');
+            return; // Sai da função sem deletar o usuário
+          }
+    
+          try {
+            await axios.get(`http://localhost:8080/users/delete/${userId}`);
+            window.location.reload(); // Recarrega a página para atualizar a lista
+          } catch (error) {
+            console.error("Erro ao deletar usuário:", error);
+            alert("Não foi possível deletar o usuário.");
+          }
         }
-      });
-      </script>
-      
-</body>
-</html>
+      } catch (error) {
+        console.error("Não foi possível carregar os usuários:", error);
+      }
+    });
+    </script>
+    
+    
+  </body>
+  </html>
