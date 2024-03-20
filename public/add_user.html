@@ -75,6 +75,18 @@
     const username = document.getElementById("user-username").value;
     const password = document.getElementById("user-password").value;
   
+    // Verificação do nome de usuário visível
+    if (!username.trim()) {
+      alert("Por favor, insira um nome de usuário.");
+      return; // Impede a execução do restante do código
+    }
+  
+    // Verificação da senha (mínimo de 8 caracteres)
+    if (password.length < 8) {
+      alert("A senha deve ter pelo menos 8 caracteres.");
+      return; // Impede a execução do restante do código
+    }
+  
     try {
       const response = await axios.post('/api/add-user', {
         username,
@@ -82,7 +94,7 @@
       });
   
       alert("Usuário adicionado com sucesso!");
-      document.getElementById("user-form").reset();
+      window.location.href = '/view_users';
     } catch (error) {
       console.error("Erro ao adicionar usuário:", error);
       alert("Erro ao adicionar usuário.");
