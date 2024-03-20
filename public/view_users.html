@@ -76,7 +76,6 @@
             </td>
           `;
     
-          // Encontra o botão recém-adicionado e associa um evento de clique
           const removeBtn = tr.querySelector('.btn-action.remove');
           removeBtn.addEventListener('click', function() {
             deleteUser(user.id, user.role);
@@ -85,17 +84,20 @@
           tbody.appendChild(tr);
         });
     
-        // Função para deletar usuário
         async function deleteUser(userId, userRole) {
-          // Verifica se o usuário é um administrador
           if (userRole === 'ADMIN') {
             alert('Não é possível deletar um administrador.');
-            return; // Sai da função sem deletar o usuário
+            return;
           }
-    
+        
+          const isConfirmed = confirm('Tem certeza que deseja remover este usuário?');
+          if (!isConfirmed) {
+            return;
+          }
+        
           try {
             await axios.get(`http://localhost:8080/users/delete/${userId}`);
-            window.location.reload(); // Recarrega a página para atualizar a lista
+            window.location.reload();
           } catch (error) {
             console.error("Erro ao deletar usuário:", error);
             alert("Não foi possível deletar o usuário.");
