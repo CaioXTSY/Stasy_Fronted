@@ -146,8 +146,7 @@
                          <button class="action-button update-item">Atualizar</button>
                      </td>
                  `;
-                 
-             
+                 updateTotalValue()
                  const removeButton = row.querySelector('.remove-item');
                  removeButton.addEventListener('click', function() {
                      row.remove();
@@ -227,7 +226,7 @@
              document.getElementById('finalizeSale').addEventListener('click', function() {
                  const sale = {
                      customerName: "",
-                     sellerId: "c095f7d1-c79a-4846-b874-4349c74fd553",
+                     sellerId: "4817d926-7c7b-463d-93a7-36a69b7bf299",//atualize com o id obtido em localhost:8080/users
                      products: {}
                  };
              
