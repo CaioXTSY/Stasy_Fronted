@@ -74,21 +74,6 @@ app.get("/sale", (req, res) => {
   res.sendFile(path.join(publicPath, "sales.html"));
 });
 
-
-// put não funciona
-app.put('/api/update-product/:productId', async (req, res) => {
-  const { productId } = req.params;
-  const productData = req.body;
-
-  try {
-      const response = await axios.put(`http://localhost:8080/products/${productId}`, productData);
-      res.json(response.data);
-  } catch (error) {
-      console.error('Erro ao atualizar produto via API:', error.message);
-      res.status(500).json({ error: "Erro interno no servidor ao chamar API" });
-  }
-});
-
 // post de produto
 app.post("/post", async (req, res) => {
   try {
@@ -107,6 +92,19 @@ app.post("/post", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error when calling API" });
   }
 });
+
+app.post('/api/update-product/:productId', async (req, res) => {
+  const { productId } = req.params;
+  const updatedProduct = req.body;
+  try {
+    const response = await axios.post(`http://localhost:8080/products/${productId}`, updatedProduct);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Erro ao atualizar o produto no servidor 8080:", error.message);
+    res.status(error.response ? error.response.status : 500).json({ message: "Erro ao atualizar o produto." });
+  }
+});
+
 
 // posts
 app.post("/sales", async (req, res) => {
