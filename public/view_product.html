@@ -94,7 +94,7 @@
       const priceFilter = document.getElementById('priceFilter');
       const tableBody = document.querySelector('.products-table tbody');
       const paginationDiv = document.querySelector('.pagination');
-
+    
       function fetchProducts() {
         axios.get('http://localhost:8080/products')
           .then(function(response) {
@@ -106,12 +106,12 @@
             console.error("Erro ao buscar produtos:", error);
           });
       }
-
+    
       function displayProductsPaginated(products) {
         const startIndex = (currentPage - 1) * productsPerPage;
         const endIndex = startIndex + productsPerPage;
         const productsToShow = products.slice(startIndex, endIndex);
-
+    
         tableBody.innerHTML = '';
         productsToShow.forEach(product => {
           const row = document.createElement('tr');
@@ -123,19 +123,16 @@
             <td>${product.manufacturer}</td>
             <td>R$ ${product.price.toFixed(2)}</td>
             <td>
-              <button class="btn-action edit"><i class="fa fa-edit"></i>Editar</button>
+              <button class="btn-action edit" data-product-id="${product.id}"><i class="fa fa-edit"></i>Editar</button>
               <button class="btn-action delete" data-product-id="${product.id}"><i class="fa fa-trash"></i>Remover</button>
             </td>
           `;
           tableBody.appendChild(row);
     
-          row.querySelector('.btn-action.delete').addEventListener('click', function() {
-            deleteProduct(product.id);
-          });
-
           row.querySelector('.btn-action.edit').addEventListener('click', function() {
             window.location.href = `/edit_product.html?productId=${product.id}`;
           });
+    
         });
     
         updatePagination(products.length);
@@ -198,10 +195,5 @@
       fetchProducts();
     });
     </script>
-    
-
-      
-
-      
 </body>
 </html>
