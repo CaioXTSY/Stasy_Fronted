@@ -43,12 +43,8 @@
 
   <div class="admin-content">
     <form id="edit-product-form">
+      <img src="imgs/logo.png" alt="Imagem do Produto" class="product-image">
       <h1>Editar Produto</h1>
-      <div class="product-details">
-        <h2>Detalhes Atuais do Produto</h2>
-        <p><strong>ID do Produto:</strong> 12345</p>
-        <p><strong>Nome do Produto:</strong> Exemplo de Produto</p>
-      </div>
       <div class="form-group">
         <div class="input-container">
           <label for="new-product-name">Novo Nome do Produto</label>
@@ -61,9 +57,21 @@
       </div>
       <div class="form-group">
         <div class="input-container">
-          <label for="new-product-category">Nova Categoria do Produto</label>
-          <input type="text" id="new-product-category" name="new-product-category" placeholder="Nova categoria do produto">
-        </div>
+          <label for="category">Categoria do Produto:</label>
+          <select id="category" name="category" required>
+              <option value="">Escolha a categoria</option>
+              <option value="CLOTHING">CLOTHING</option>
+              <option value="ELECTRONICS">ELECTRONICS</option>
+              <option value="DRINKS">DRINKS</option>
+              <option value="ALIMENTO">ALIMENTO</option>
+              <option value="BEBIDA">BEBIDA</option>
+              <option value="ESCOLAR">ESCOLAR</option>
+              <option value="ELETRONICO">ELETRONICO</option>
+              <option value="LIMPEZA">LIMPEZA</option>
+              <option value="HIGIENE">HIGIENE</option>
+              <option value="OUTROS">OUTROS</option>
+          </select>
+      </div>
         <div class="input-container">
           <label for="new-product-code">Novo Código do Produto</label>
           <input type="text" id="new-product-code" name="new-product-code" placeholder="Novo código do produto">
@@ -79,8 +87,6 @@
           <input type="number" id="new-product-quantity" name="new-product-quantity" placeholder="Nova quantidade em estoque">
         </div>
       </div>
-      
-      <!-- Continue adicionando os demais campos de formulário aqui -->
       <div class="form-actions">
         <button type="reset" class="btn-reset">Cancelar</button>
         <button type="submit" class="btn-submit">Atualizar Produto</button>
@@ -96,28 +102,53 @@
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('productId');
     
+      function preencherDadosDoProduto(product) {
+        document.getElementById('new-product-name').value = product.name;
+        document.getElementById('new-manufacturer-name').value = product.manufacturer;
+        document.getElementById('new-product-category').value = product.category;
+        document.getElementById('new-product-code').value = product.barcode;
+        document.getElementById('new-product-price').value = product.price;
+        document.getElementById('new-product-quantity').value = product.quantity;
+      }
+    
+      function buscarDadosDoProduto() {
+        axios.get(`http://localhost:8080/products/${productId}`)
+          .then(function(response) {
+            const product = response.data;
+            preencherDadosDoProduto(product);
+          })
+          .catch(function(error) {
+            console.error("Erro ao buscar dados do produto:", error);
+          });
+      }
+    
+      buscarDadosDoProduto();
+    
       document.getElementById('edit-product-form').addEventListener('submit', async function(e) {
         e.preventDefault();
     
         const updatedProduct = {
-          barcode: document.getElementById('new-product-code').value,
-          name: document.getElementById('new-product-name').value,
-          manufacturer: document.getElementById('new-manufacturer-name').value,
-          category: document.getElementById('new-product-category').value,
+          barcode: parseInt(document.getElementById('new-product-code').value, 10),
+          name: document.getElementById('new-product-name').value.trim(),
+          manufacturer: document.getElementById('new-manufacturer-name').value.trim(),
+          category: document.getElementById('new-product-category').value.trim(),
           price: parseFloat(document.getElementById('new-product-price').value),
-          quantity: parseInt(document.getElementById('new-product-quantity').value),
+          quantity: parseInt(document.getElementById('new-product-quantity').value, 10),
         };
-    
         try {
-          const response = await axios.put(`http://localhost:3000/update-product/${productId}`, updatedProduct);
+          const response = await axios.post(`http://localhost:3000/api/update-product/${productId}`, updatedProduct, {
+            headers: { 'Content-Type': 'application/json' }
+          });
+          console.log('Produto atualizado com sucesso:', response.data);
           alert('Produto atualizado com sucesso!');
-          console.log(response.data);
+          window.location.href = '/view_products';
         } catch (error) {
-          console.error("Erro ao atualizar produto:", error.response ? error.response.data : error);
+          console.error('Erro ao atualizar o produto:', error);
+          alert('Erro ao atualizar o produto. Por favor, verifique o console para mais detalhes.');
         }
       });
     });
     </script>
-    
+
 </body>
 </html>
