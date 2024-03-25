@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="css/admin.css">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/admin_add_product.css"> <!-- Certifique-se de ajustar o nome do arquivo CSS -->
+  <link rel="stylesheet" href="css/admin_add_product.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
@@ -57,21 +57,22 @@
       </div>
       <div class="form-group">
         <div class="input-container">
-          <label for="category">Categoria do Produto:</label>
-          <select id="category" name="category" required>
-              <option value="">Escolha a categoria</option>
-              <option value="CLOTHING">CLOTHING</option>
-              <option value="ELECTRONICS">ELECTRONICS</option>
-              <option value="DRINKS">DRINKS</option>
-              <option value="ALIMENTO">ALIMENTO</option>
-              <option value="BEBIDA">BEBIDA</option>
-              <option value="ESCOLAR">ESCOLAR</option>
-              <option value="ELETRONICO">ELETRONICO</option>
-              <option value="LIMPEZA">LIMPEZA</option>
-              <option value="HIGIENE">HIGIENE</option>
-              <option value="OUTROS">OUTROS</option>
+          <label for="new-product-category">Categoria do Produto</label>
+          <select id="new-product-category" name="new-product-category">
+            <option value="">Escolha a categoria</option>
+            <option value="CLOTHING">CLOTHING</option>
+            <option value="ELECTRONICS">ELECTRONICS</option>
+            <option value="DRINKS">DRINKS</option>
+            <option value="ALIMENTO">ALIMENTO</option>
+            <option value="BEBIDA">BEBIDA</option>
+            <option value="ESCOLAR">ESCOLAR</option>
+            <option value="ELETRONICO">ELETRONICO</option>
+            <option value="LIMPEZA">LIMPEZA</option>
+            <option value="HIGIENE">HIGIENE</option>
+            <option value="OUTROS">OUTROS</option>
           </select>
-      </div>
+        </div>
+        
         <div class="input-container">
           <label for="new-product-code">Novo Código do Produto</label>
           <input type="text" id="new-product-code" name="new-product-code" placeholder="Novo código do produto">
@@ -101,7 +102,6 @@
     document.addEventListener('DOMContentLoaded', function() {
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('productId');
-    
       function preencherDadosDoProduto(product) {
         document.getElementById('new-product-name').value = product.name;
         document.getElementById('new-manufacturer-name').value = product.manufacturer;
@@ -110,7 +110,6 @@
         document.getElementById('new-product-price').value = product.price;
         document.getElementById('new-product-quantity').value = product.quantity;
       }
-    
       function buscarDadosDoProduto() {
         axios.get(`http://localhost:8080/products/${productId}`)
           .then(function(response) {
@@ -121,7 +120,6 @@
             console.error("Erro ao buscar dados do produto:", error);
           });
       }
-    
       buscarDadosDoProduto();
     
       document.getElementById('edit-product-form').addEventListener('submit', async function(e) {
@@ -135,6 +133,7 @@
           price: parseFloat(document.getElementById('new-product-price').value),
           quantity: parseInt(document.getElementById('new-product-quantity').value, 10),
         };
+    
         try {
           const response = await axios.post(`http://localhost:3000/api/update-product/${productId}`, updatedProduct, {
             headers: { 'Content-Type': 'application/json' }
@@ -149,6 +148,8 @@
       });
     });
     </script>
-
+    
+    
+    
 </body>
 </html>
